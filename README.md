@@ -1,20 +1,127 @@
-#Master thesis: 
-##Deep Learning-Powered Image Super-resolution implementation on embedded device. 
-WHAT?  - Image super-resolution is the process of enhancing a high-resolution version of an image from a lower-resolution counterpart.
+<h1 align="center">Welcome to <%= projectName %> 👋</h1>
+<p>
+<% if (isProjectOnNpm) { -%>
+  <a href="https://www.npmjs.com/package/<%= projectName %>" target="_blank">
+    <img alt="Version" src="https://img.shields.io/npm/v/<%= projectName %>.svg">
+  </a>
+<% } -%>
+<% if (projectVersion && !isProjectOnNpm) { -%>
+  <img alt="Version" src="https://img.shields.io/badge/version-<%= projectVersion %>-blue.svg?cacheSeconds=2592000" />
+<% } -%>
+<% if (projectPrerequisites) { -%>
+<% projectPrerequisites.map(({ name, value }) => { -%>
+  <img src="https://img.shields.io/badge/<%= name %>-<%= encodeURIComponent(value) %>-blue.svg" />
+<% }) -%>
+<% } -%>
+<% if (projectDocumentationUrl) { -%>
+  <a href="<%= projectDocumentationUrl %>" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+<% } -%>
+<% if (isGithubRepos) { -%>
+  <a href="<%= repositoryUrl %>/graphs/commit-activity" target="_blank">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
+  </a>
+<% } -%>
+<% if (licenseName) { -%>
+  <a href="<%= licenseUrl ? licenseUrl : '#' %>" target="_blank">
+    <img alt="License: <%= licenseName %>" src="https://img.shields.io/<%= isGithubRepos ? `github/license/${authorGithubUsername}/${projectName}` : `badge/License-${licenseName}-yellow.svg` %>" />
+  </a>
+<% } -%>
+<% if (authorTwitterUsername) { -%>
+  <a href="https://twitter.com/<%= authorTwitterUsername %>" target="_blank">
+    <img alt="Twitter: <%= authorTwitterUsername %>" src="https://img.shields.io/twitter/follow/<%= authorTwitterUsername %>.svg?style=social" />
+  </a>
+<% } -%>
+</p>
+<% if (projectDescription) { -%>
 
-WHY? - Due to the limitations of camera hardware, camera pose, limited bandwidth, varying illumination conditions, and occlusions, the quality of the surveillance feed is significantly degraded at times, thereby compromising monitoring of behaviour, activities, and other sporadic information in the scene.
+> <%= projectDescription %>
+<% } -%>
+<% if (projectHomepage) { -%>
 
-USE CASE: In recent years, there has been notable advancement in image super-resolution, primarily driven by deep learning techniques. This category of image processing, vital in computer vision and related fields, finds applications in diverse areas such as medical imaging, anomaly detection, edge detection, semantic image segmentation, digit recognition, and scene recognition. 
+### 🏠 [Homepage](<%= projectHomepage %>)
+<% } -%>
+<% if (projectDemoUrl) { -%>
 
-CHALLENGES: Despite these significant strides, a persistent challenge remains how to effectively recover finer texture details, and determining the optimal upscaling factor for the image? 
+### ✨ [Demo](<%= projectDemoUrl %>)
+<% } -%>
+<% if (projectPrerequisites && projectPrerequisites.length) { -%>
 
-AIM: This thesis aims to address this issue by delving into the intricacies of upscaling, employing a thorough evaluation utilizing both subjective (perceptual loss) and objective metrics (MSE). The findings from this research endeavour aspire to not only contribute to the ongoing exploration of image super-resolution but also to serve as a catalyst for the deep learning community. Specifically, it encourages the integration of Image Super-Resolution (ISR) as a pre-processing step in various vision tasks, particularly when dealing with low-resolution input images.
-Tasks:
-1)	Literature review to understand the current state of research, pinpointing key challenges in the field.
-2)	Use and enhance the existing state-of-the-art method, followed by training to attain optimal performance on an available dataset. {Set5, Set14 or BSD100}
-3)	Compare with existing methods and determine an optimal upscaling factor for the image resolution.
-4)	Evaluate the algorithm's quality and efficacy using a diverse set of metrics, encompassing both subjective and objective measures **.
-5)	Make the model applicable (inference time and accuracy) on an embedded device (e.g. Nvidia Jetson).
-6)	Integrate it in the (embedded) anomaly detection pipeline (pre-processing), then execute the complete system on the device to compare both the inference time and accuracy metrics to the original pipeline.
+## Prerequisites
 
-** Subjective measures include mean squared reconstruction error between ground truth and HR image. However, the ability of MSE to capture perceptually relevant differences such as high texture details is very limited as they are defined on pixel wise image differences. Hence perceptual loss is more significant. Perceptual loss = content loss + adversarial loss
+<% projectPrerequisites.map(({ name, value }) => { -%>
+- <%= name %> <%= value %>
+<% }) -%>
+<% } -%>
+<% if (installCommand) { -%>
+
+## Install
+
+```sh
+<%= installCommand %>
+```
+<% } -%>
+<% if (usage) { -%>
+
+## Usage
+
+```sh
+<%= usage %>
+```
+<% } -%>
+<% if (testCommand) { -%>
+
+## Run tests
+
+```sh
+<%= testCommand %>
+```
+<% } -%>
+<% if (authorName || authorTwitterUsername || authorGithubUsername) { -%>
+
+## Author
+<% if (authorName) { %>
+👤 **<%= authorName %>**
+<% } %>
+<% if (authorWebsite) { -%>
+* Website: <%= authorWebsite %>
+<% } -%>
+<% if (authorTwitterUsername) { -%>
+* Twitter: [@<%= authorTwitterUsername %>](https://twitter.com/<%= authorTwitterUsername %>)
+<% } -%>
+<% if (authorGithubUsername) { -%>
+* GitHub: [@<%= authorGithubUsername %>](https://github.com/<%= authorGithubUsername %>)
+<% } -%>
+<% if (authorLinkedInUsername) { -%>
+* LinkedIn: [@<%= authorLinkedInUsername %>](https://linkedin.com/in/<%= authorLinkedInUsername %>)
+<% } -%>
+<% } -%>
+<% if (issuesUrl) { -%>
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](<%= issuesUrl %>). <%= contributingUrl ? `You can also take a look at the [contributing guide](${contributingUrl}).` : '' %>
+<% } -%>
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+<% if (authorPatreonUsername) { -%>
+
+<a href="https://www.patreon.com/<%= authorPatreonUsername %>">
+  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+</a>
+<% } -%>
+<% if (licenseName && licenseUrl) { -%>
+
+## 📝 License
+
+<% if (authorName && authorGithubUsername) { -%>
+Copyright © <%= currentYear %> [<%= authorName %>](https://github.com/<%= authorGithubUsername %>).<br />
+<% } -%>
+This project is [<%= licenseName %>](<%= licenseUrl %>) licensed.
+<% } -%>
+
+***
+<%- include('footer.md'); -%>
