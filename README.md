@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to <%= projectName %> 👋</h1>
+<h1 align="center">Welcome to <%= Super Resolution Networks %> 👋</h1>
 <p>
 <% if (isProjectOnNpm) { -%>
   <a href="https://www.npmjs.com/package/<%= projectName %>" target="_blank">
