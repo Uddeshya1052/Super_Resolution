@@ -1,15 +1,15 @@
+
+## *Libraries*
 from mode import *
 import argparse
 import onnx
 import matplotlib.pyplot as plt
 import onnxruntime as ort
-#import optuna
-#import optuna.visualization as vis
-parser = argparse.ArgumentParser()
-
+import optuna
+import optuna.visualization as vis
 from prettytable import PrettyTable
-
-from srgan_model import Generator  # Import the model class definition
+from srgan_model import Generator 
+parser = argparse.ArgumentParser()
 
 ######## Optuna for Hyper parameter Optimization.
  def objective(trial):
@@ -92,10 +92,8 @@ parser.add_argument("--generator_path", type = str ,default = './model/without_B
 parser.add_argument("--mode", type = str, default = 'test_only')
 
 args = parser.parse_args()
-#start_time = time.time()
+
 if args.mode == 'train':
-    #count_parameters()
-    #optimize_hyperparameters(args)
     train(args)
     
 elif args.mode == 'test':
