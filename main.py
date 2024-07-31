@@ -53,8 +53,7 @@ def optimize_hyperparameters(args):
     plot2 = vis.plot_contour(loaded_study)
     plot2.show()
 
-
-
+## Counting number of trainable parameters in the model
 def count_parameters(model):
     table = PrettyTable(["Modules", "Parameters"])
     total_params = 0
