@@ -252,7 +252,7 @@ def test_only(args):
 import onnx
 import onnxruntime as ort
 
-
+## **Testing ONNX model**
 def test_only_onnx(args):
     # Load the ONNX model
     onnx_model = onnx.load(args.generator_path)
