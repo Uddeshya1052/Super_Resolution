@@ -12,43 +12,56 @@ from prettytable import PrettyTable
 from srgan_model import Generator  # Import the model class definition
 
 ######## Optuna for Hyper parameter Optimization.
-# def objective(trial):
-#     # Define search space for hyperparameters
-#     lr = trial.suggest_float('lr', 1e-6, 1e-2, log=True)
-#     vgg_rescale_coeff = trial.suggest_float('vgg_rescale_coeff', 0.1, 1.0)
-#     adv_coeff = trial.suggest_float('adv_coeff', 0.1, 1.0)
-#     tv_loss_coeff = trial.suggest_float('tv_loss_coeff', 0.1, 1.0)
-# 
-#     # Modify the training code to use the sampled hyperparameters
-#     args.lr = lr
-#     #args.vgg_rescale_coeff = vgg_rescale_coeff
-#    # args.adv_coeff = adv_coeff
-#    # args.tv_loss_coeff = tv_loss_coeff
-# 
-#     # Run training with the current set of hyperparameters
-#     val_metric = train(args)  # Modify train() to return the validation metric you want to optimize
-#     
-#     return val_metric
+ def objective(trial):
+     # Define search space for hyperparameters
+     lr = trial.suggest_float('lr', 1e-6, 1e-4, log=True)
+     vgg_rescale_coeff = trial.suggest_float('vgg_rescale_coeff', 0.001, 0.008)
+     adv_coeff = trial.suggest_float('adv_coeff', 0.0001, 0.0015)
+     tv_loss_coeff = trial.suggest_float('tv_loss_coeff', 0.001, 0.1)
+     batch_size = trial.suggest_int('batch_size', 4, 16)
+     args.lr = lr
+    #args.pre_train_epoch = pre_train_epoch
+    #args.fine_train_epoch = fine_train_epoch
+     args.vgg_rescale_coeff = vgg_rescale_coeff
+     args.adv_coeff = adv_coeff
+     args.tv_loss_coeff = tv_loss_coeff
+     args.batch_size = batch_size
+     # Run training with the current set of hyperparameters
+     val_metric = train(args)  # Modify train() to return the validation metric you want to optimize
+     
+     return val_metric
 
-# def optimize_hyperparameters(self,args):
-#     self.args =args
-#     study = optuna.create_study(study_name='image_resolution',storage='sqlite:///example.db',load_if_exists=False,direction='maximize')
-#     study.optimize(objective, n_trials=1)  # Adjust the number of trials as needed
+def optimize_hyperparameters(args):
+    #self.args =args
+    study_name = 'image_resolution4'
+    storage_name = f'sqlite:///{study_name}.db'
+    study = optuna.create_study(study_name=study_name,storage=storage_name,load_if_exists=True,direction='maximize')
+    objective = partial(objective_fct, args = args)
+    study.optimize(objective, n_trials=3)  # Adjust the number of trials as needed
 
-#     # Print the best hyperparameters and the corresponding best value
-#     print('Best trial:')
-#     trial = study.best_trial
-#     print('Value: {}'.format(trial.value))
-#     print('Params: ')
-#     for key, value in trial.params.items():
-#         print('{}: {}'.format(key, value))
-#     vis.plot_optimization_history(study)
-#     plt.savefig('optimization_history.png')
+    # Print the best hyperparameters and the corresponding best value
+    print('Best trial:')
+    trial = study.best_trial
+    print('Value: {}'.format(trial.value))
+    print('Params: ')
+    for key, value in trial.params.items():
+        print('{}: {}'.format(key, value))
+    # vis.plot_optimization_history(study)
+    # plt.savefig('optimization_history.png')
+    loaded_study = optuna.load_study(
+            study_name=study_name,
+            storage=storage_name,
+    )
+    print(loaded_study.best_params)
+    # vis.plot_optimization_history(study)
+    #plot = plot_optimization_history(study)
+    # plt.savefig('optimization_history.png')
+    #plot.show()
+    plot2 = vis.plot_contour(loaded_study)
+    plot2.show()
 
 
-def count_parameters1(model):
-    total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    return total_params
+
 def count_parameters(model):
     table = PrettyTable(["Modules", "Parameters"])
     total_params = 0
@@ -62,16 +75,6 @@ def count_parameters(model):
     print(f"Total Trainable Params: {total_params}")
     return total_params
 
-# Load the state dictionary from the .pt file
-#state_dict = torch.load('pruned_model_temp.pt',map_location='cpu')
-
-# Instantiate the model class
-#model = Generator(img_feat=3, n_feats=64, kernel_size=3, num_block=16)
-# Load the state dictionary into the model
-#model.load_state_dict(state_dict)
-
-# Call the count_parameters function with the loaded model
-#count_parameters(model)
 
 def str2bool(v):
     return v.lower() in ('true')
@@ -106,10 +109,6 @@ elif args.mode == 'test':
     test(args)
     
 elif args.mode == 'test_only':
-    #model=Generator()
-    #SRGAN1_gene_final=torch.load("SRGAN1_gene_final.pt",map_location=torch.device('cpu'))
-    
-    #count_parameters(model)
     test_only(args)
 
-#end_time = time.time()
+
