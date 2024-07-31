@@ -57,7 +57,7 @@ Ensure you have the following prerequisites before proceeding with the installat
         ```sh
         conda install pytorch-cpu==1.1.0 torchvision-cpu==0.3.0 cpuonly -c pytorch
 
-🚀 Usage
+## 🚀 Usage
 
 Train Your Model:
 
@@ -76,11 +76,11 @@ Test Your Model
   - `--LR_path`: Path to your low-resolution test images.
   - `--generator_path`: Path to your trained SRGAN generator model.
 
-🤝 Contributing
+## 🤝 Contributing
    Contributions, issues, and feature requests are welcome! Feel free to check the issues page. You can 
    also take a look at the contributing guide.
 
-👤 Author
+## 👤 Author
   - Name: Uddeshya Srivastava
   - GitHub: [Uddeshya1052](https://github.com/Uddeshya1052/Super_Resolution)
   - LinkedIn: [Uddeshya Srivastava](https://www.linkedin.com/in/uddeshya-srivastava-739881137/)
