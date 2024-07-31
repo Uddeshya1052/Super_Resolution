@@ -58,7 +58,9 @@ Ensure you have the following prerequisites before proceeding with the installat
         conda install pytorch-cpu==1.1.0 torchvision-cpu==0.3.0 cpuonly -c pytorch
 
 🚀 Usage
-Train Your Model
+
+Train Your Model:
+
 To train your model on a custom dataset, execute the following command:
 
     python main.py --LR_path custom_dataset_cars/hr_train_LR --GT_path custom_dataset_cars/hr_train_HR
