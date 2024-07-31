@@ -16,8 +16,8 @@
 ## Introduction
 
 Welcome to the SRGAN project! This repository contains code and instructions for training a Super-Resolution Generative Adversarial Network (SRGAN) on a custom dataset. SRGAN is a powerful neural network architecture that can upscale low-resolution images to high-resolution images with impressive detail and fidelity. The SRGAN model here are of two types:
-- SRGAN_self_attention.py: This model incorporates self attention technique inside Generative Adversarial Network (GAN) architecture.
-- srgan_model: This model is the normal GAN model that increases the resolution of the input image by 4. 
+- SRGAN_self_attention.py : This model incorporates self attention technique inside Generative Adversarial Network (GAN) architecture.
+- srgan_model.py : This model is the normal GAN model that increases the resolution of the input image by 4. 
 
 ## ✨ Features
 
