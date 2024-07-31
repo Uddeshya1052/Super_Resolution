@@ -20,8 +20,7 @@ from srgan_model import Generator  # Import the model class definition
      tv_loss_coeff = trial.suggest_float('tv_loss_coeff', 0.001, 0.1)
      batch_size = trial.suggest_int('batch_size', 4, 16)
      args.lr = lr
-    #args.pre_train_epoch = pre_train_epoch
-    #args.fine_train_epoch = fine_train_epoch
+
      args.vgg_rescale_coeff = vgg_rescale_coeff
      args.adv_coeff = adv_coeff
      args.tv_loss_coeff = tv_loss_coeff
@@ -32,13 +31,11 @@ from srgan_model import Generator  # Import the model class definition
      return val_metric
 
 def optimize_hyperparameters(args):
-    #self.args =args
-    study_name = 'image_resolution4'
+    study_name = 'image_resolution'
     storage_name = f'sqlite:///{study_name}.db'
     study = optuna.create_study(study_name=study_name,storage=storage_name,load_if_exists=True,direction='maximize')
     objective = partial(objective_fct, args = args)
     study.optimize(objective, n_trials=3)  # Adjust the number of trials as needed
-
     # Print the best hyperparameters and the corresponding best value
     print('Best trial:')
     trial = study.best_trial
@@ -53,10 +50,6 @@ def optimize_hyperparameters(args):
             storage=storage_name,
     )
     print(loaded_study.best_params)
-    # vis.plot_optimization_history(study)
-    #plot = plot_optimization_history(study)
-    # plt.savefig('optimization_history.png')
-    #plot.show()
     plot2 = vis.plot_contour(loaded_study)
     plot2.show()
 
