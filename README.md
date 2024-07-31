@@ -40,3 +40,11 @@ Ensure you have the following prerequisites before proceeding with the installat
    git clone https://github.com/yourusername/SRGAN-Custom-Dataset.git
    cd SRGAN-Custom-Dataset
 
+2. **Set up the environment:**
+
+Open the Anaconda prompt and navigate to the folder where you have your environment.yml file:
+```sh
+conda env create -f environment.yml
+conda activate srganenv_gpu
+
+
