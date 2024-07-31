@@ -9,8 +9,8 @@ from srgan_model import Generator, Discriminator
 from vgg19 import vgg19
 import numpy as np
 from PIL import Image
-#from skimage.color import rgb2ycbcr
-#from skimage.measure import compare_psnr
+from skimage.color import rgb2ycbcr
+from skimage.measure import compare_psnr
 import time
 
 import os
@@ -25,12 +25,14 @@ def setup(rank, world_size):
 def cleanup():
     dist.destroy_process_group()
 
-def train(args, rank, world_size):       #python -m torch.distributed.launch --nproc_per_node=2 --nnodes=1 --node_rank=0 main.py
+
+## ---------------------------------------Training function---------------------------------------------- ##
+def train(args, rank, world_size):      
 
     setup(rank, world_size)
     torch.cuda.set_device(rank)
-    device = torch.device(f"cuda:{rank}")
-    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #device = torch.device(f"cuda:{rank}")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     transform  = transforms.Compose([crop(args.scale, args.patch_size), augmentation()])
     sampler = torch.utils.data.distributed.DistributedSampler(dataset, num_replicas=world_size, rank=rank)
@@ -69,22 +71,11 @@ def train(args, rank, world_size):       #python -m torch.distributed.launch --n
             g_optim.step()
 
         pre_epoch += 1
-        
-
         if pre_epoch % 2 == 0:
             print(pre_epoch)
             print(loss.item())
-
             print('=========')
-        data =[]
-        fig = go.FigureWidget(data=[{'type': 'scatter'}])
-        #fig.add_scatter()
-        fig
-        data.append(loss.item())
-        for i in range(len(data)):
-            time.sleep(0.3)
-            fig.data[0].y = data[:i+1]
-        if pre_epoch % 1400 ==0:
+        if pre_epoch % 800 ==0:
             torch.save(generator.state_dict(), './model/pre_trained_model_%03d.pt'%pre_epoch)
 
         
@@ -144,14 +135,8 @@ def train(args, rank, world_size):       #python -m torch.distributed.launch --n
             g_optim.zero_grad()
             d_optim.zero_grad()
             g_loss.backward()
-            g_optim.step()
-            #y_output = rgb2ycbcr(output)[args.scale:-args.scale, args.scale:-args.scale, :1]
-            #y_gt = rgb2ycbcr(gt)[args.scale:-args.scale, args.scale:-args.scale, :1]
-            #psnr = compare_psnr(y_output / 255.0, y_gt / 255.0, data_range = 1.0) #######################
-            #psnr_list.append(psnr)
-            
+            g_optim.step()     
         fine_epoch += 1
-
         if fine_epoch % 2 == 0:
             print(fine_epoch)
             print(g_loss.item())
@@ -159,16 +144,12 @@ def train(args, rank, world_size):       #python -m torch.distributed.launch --n
             print('=========')
 
         if fine_epoch % 200 ==0:
-            #torch.save(generator.state_dict(), './model/SRGAN_gene_%03d.pt'%fine_epoch)
-            #torch.save(discriminator.state_dict(), './model/SRGAN_discrim_%03d.pt'%fine_epoch)
             torch.save(generator.state_dict(), './model/SRGAN_gene_%03d.pt'%fine_epoch)
             torch.save(discriminator.state_dict(), './model/SRGAN_discrim_%03d.pt'%fine_epoch)
     cleanup()
 
-# In[ ]:
-
+## Calculating PSNR and SSMI values for the images
 def test(args):
-    
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     dataset = mydata(GT_path = args.GT_path, LR_path = args.LR_path, in_memory = False, transform = None)
     loader = DataLoader(dataset, batch_size = 1, shuffle = False, num_workers = args.num_workers)
@@ -213,9 +194,8 @@ def test(args):
         return psnr
         #f.write('avg psnr : %04f' % np.mean(psnr_list))
 
-
-def test_only(args):
-    
+## ---------------------------------------Test function---------------------------------------------- ##
+def test_only(args): 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(device)
     dataset = testOnly_data(LR_path = args.LR_path, in_memory = False, transform = None)
@@ -248,7 +228,7 @@ def test_only(args):
     average_image_timing = np.mean(image_timings)
     print("Average timing for each image: {:.2f} milliseconds".format(average_image_timing))
 
-
+## ---------------------------------------Test function (ONNX model) ---------------------------------------------- ##
 import onnx
 import onnxruntime as ort
 
