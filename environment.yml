@@ -1,7 +1,7 @@
 
-name: srganenv
+name: srganenv_gpu
 dependencies:
-- python=3.6.5
+- python=3.7.5
 - cudatoolkit=10.1
 - pip
 - tqdm=4.32.1
