@@ -39,8 +39,8 @@ Ensure you have the following prerequisites before proceeding with the installat
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/SRGAN-Custom-Dataset.git
-   cd SRGAN-Custom-Dataset
+   git clone https://github.com/Uddeshya1052/Super_Resolution.git
+   cd Super_Resolution
 
 2. **Create and activate the conda environment:**
 
