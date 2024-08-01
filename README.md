@@ -65,7 +65,7 @@ Train Your Model:
 
 To train your model on a custom dataset, execute the following command:
 
-    python main.py --LR_path Custom_dataset/LR_Images --GT_path Custom_dataset/LR_Images
+    python main.py --LR_path Custom_dataset/LR_Images --GT_path Custom_dataset/HR_images
 
 - **--LR_path:** Path to your low-resolution training images.
 - **--GT_path:** Path to your ground truth high-resolution images.
