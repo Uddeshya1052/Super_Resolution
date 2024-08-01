@@ -72,7 +72,7 @@ To train your model on a custom dataset, execute the following command:
 
 Test Your Model
 
-    python main.py --mode test_only --LR_path test_data/cars --generator_path ./model/srgan_custom.pt
+    python main.py --mode test_only --LR_path test_data --generator_path ./model/srgan_custom.pt
 
   - `--mode test_only`: Set this flag to indicate testing mode.
   - `--LR_path`: Path to your low-resolution test images.
